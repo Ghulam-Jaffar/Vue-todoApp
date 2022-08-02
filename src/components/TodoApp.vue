@@ -7,8 +7,8 @@
         class="class='form-control block w-11/12 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-sky-300 rounded transition ease-in-out duration-500 focus:text-gray-700 focus:bg-white focus:border-sky-600 focus:outline-none">
       <button class="rounded w-fit ml-1 p-2 border-2 border-sky-300" @click="addTask">ADD</button>
     </div>
-    <div class="w-8/12 mt-5  rounded-sm shadow-sm">
-      <table class="table-auto w-full border-2">
+    <div class=" mt-5 rounded-sm shadow-sm flex flex-1 justify-center items-center sm:w-full md:w-10/12 lg:w-8/12 xl:w-7/12">
+      <table class="table-auto  border-2 md:w-6/12">
         <thead class="bg-gray-50 border-b-2">
           <tr class="border-2">
             <th class="w-10">#</th>
@@ -18,12 +18,15 @@
             <th class="w-20">Delete</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class='bg-slate-200'>
 
           <tr v-for="(task, index) in tasks" :key="index">
-            <td class="text-center">{{ index + 1 }}</td>
-            <td class="text-center" :class="{ completion: task.completion}">{{ task.name }}</td>
-            <td class="text-center cursor-pointer " @click="toggleTask(index)" :class="{ statusGreen:task.completion, statusRed : !task.completion}" >{{ task.completion }}</td>
+            <td class="text-center">{{ index + 1+'.' }}</td>
+            <td class="text-center" :class="{ completion: task.completion }">{{ task.name }}</td>
+            <td class="text-center cursor-pointer " @click="toggleTask(index)"
+              :class="{ statusGreen: task.completion, statusRed: !task.completion }">{{
+                  task.completion ? "Finished" : "To-do"
+              }}</td>
             <td>
 
               <svg xmlns="http://www.w3.org/2000/svg" class='h-5 w-full text-green-600 cursor-pointer'
@@ -94,13 +97,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.completion{
+.completion {
   text-decoration: line-through;
 }
-.statusGreen{
+
+.statusGreen {
   color: green;
 }
-.statusRed{
+
+.statusRed {
   color: red;
 }
 </style>
