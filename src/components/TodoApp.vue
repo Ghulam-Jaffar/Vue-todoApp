@@ -2,32 +2,40 @@
   <div class="flex flex-col justify-center items-center mt-10">
     <p class='font-bold'>My todo App</p>
     {{ msg }}
-    <div class="flex mt-2">
+    <div class="flex mt-2 mx-1">
       <input type="text" placeholder="enter new task" v-model="newTask"
-        class="class='form-control block w-11/12 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-sky-300 rounded transition ease-in-out duration-500 focus:text-gray-700 focus:bg-white focus:border-sky-600 focus:outline-none">
+        class="class='form-control block w-11/12 px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-400 rounded transition ease-in-out duration-500 focus:text-gray-700 focus:bg-white focus:border-sky-400 focus:outline-none">
       <button class="rounded w-fit ml-1 p-2 border-2 border-sky-300" @click="addTask">ADD</button>
     </div>
-    <div class=" mt-5 rounded-sm shadow-sm flex flex-1 justify-center items-center sm:w-full md:w-10/12 lg:w-8/12 xl:w-7/12">
+    <div v-if="tasks.length < 1">
+      <p class="font-bold mt-4 mx-2">Nothing yet to show! Why don't you add some todos :D</p>
+    </div>
+    <div v-else
+      class=" mt-5 rounded-sm flex flex-1 justify-center items-center sm:w-full md:w-10/12 lg:w-8/12 xl:w-7/12 ">
       <table class="table-auto  border-2 md:w-6/12">
         <thead class="bg-gray-50 border-b-2">
           <tr class="border-2">
             <th class="w-10">#</th>
-            <th>Task</th>
-            <th class='w-20'>Status</th>
-            <th class="w-20">Edit</th>
-            <th class="w-20">Delete</th>
+            <th class="w-full">Task</th>
+            <th class='w-20 p-1'>Status</th>
+            <th class="w-20 p-1 ">Edit</th>
+            <th class="w-20 p-1">Delete</th>
           </tr>
         </thead>
-        <tbody class='bg-slate-200'>
+        <tbody class='bg-slate-200 overflow-auto'>
 
-          <tr v-for="(task, index) in tasks" :key="index">
-            <td class="text-center">{{ index + 1+'.' }}</td>
-            <td class="text-center" :class="{ completion: task.completion }">{{ task.name }}</td>
-            <td class="text-center cursor-pointer " @click="toggleTask(index)"
+          <tr v-for="(task, index) in tasks" :key="index" class="m-10 border-y-4 border-slate-100 ">
+            <td class="text-center w-10">{{ index + 1 + '.' }}</td>
+            <td class="text-center w-full cursor-pointer" :class="{ completion: task.completion }"
+              @click="toggleTask(index)">{{
+                  task.name
+              }}</td>
+
+            <td class="text-center cursor-pointer w-20" @click="toggleTask(index)"
               :class="{ statusGreen: task.completion, statusRed: !task.completion }">{{
                   task.completion ? "Finished" : "To-do"
               }}</td>
-            <td>
+            <td class="w-20">
 
               <svg xmlns="http://www.w3.org/2000/svg" class='h-5 w-full text-green-600 cursor-pointer'
                 viewBox="0 0 20 20" fill="currentColor" @click="editTask(index)">
@@ -38,7 +46,7 @@
               </svg>
 
             </td>
-            <td>
+            <td class='w-20'>
 
               <svg xmlns="http://www.w3.org/2000/svg" class='h-5 w-full text-red-600 cursor-pointer' viewBox="0 0 20 20"
                 fill="currentColor" @click="deleteTask(index)">
@@ -65,7 +73,7 @@ export default {
   data() {
     return {
       tasks: [
-        { name: 'task1', completion: false }, { name: 'task2', completion: false }
+
       ],
       newTask: null,
       editedTask: null,
@@ -76,6 +84,7 @@ export default {
     addTask() {
       if (this.newTask && this.editedTask === null) {
         this.tasks.push({ name: this.newTask, completion: false })
+        this.newTask = null
       } else {
         this.tasks[this.editedTask].name = this.newTask
         this.editedTask = null
